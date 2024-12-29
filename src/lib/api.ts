@@ -6,6 +6,17 @@ import { ModelConfig, ModelResponse } from '@/types';
 // 创建一个 Map 来存储 Gemini 实例，避免重复创建
 const geminiInstances = new Map();
 
+interface ApiError extends Error {
+  response?: {
+    data?: {
+      error?: {
+        message?: string;
+      };
+    };
+    status?: number;
+  };
+}
+
 async function getGeminiResponse(
   apiKey: string, 
   modelName: string, 
@@ -97,18 +108,19 @@ async function callModel(
       content
     };
     
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const err = error as ApiError;
     console.error(`${model.id} error:`, {
-      message: error.message,
-      response: error.response?.data,
-      status: error.response?.status
+      message: err.message,
+      response: err.response?.data,
+      status: err.response?.status
     });
     
-    const errorMessage = error.response?.data?.error?.message || 
-                        error.response?.data?.error || 
-                        error.message || 
-                        'Unknown error occurred';
-                        
+    const errorMessage = 
+      err.response?.data?.error?.message || 
+      err.message || 
+      'Unknown error occurred';
+                      
     return {
       modelId: model.name,
       content: '',

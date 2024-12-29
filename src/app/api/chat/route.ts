@@ -3,6 +3,15 @@ import { NextResponse } from 'next/server';
 import { callModel, callJudge } from '@/lib/api';
 import { ModelConfig, ModelResponse } from '@/types';
 
+interface ApiError extends Error {
+  response?: {
+    data?: {
+      error?: string;
+    };
+    status?: number;
+  };
+}
+
 export async function POST(request: Request) {
   try {
     const { models, judge, systemPrompt, userInput } = await request.json();
@@ -62,11 +71,14 @@ export async function POST(request: Request) {
       responses: modelResponses,
       judgeResponse
     });
-  } catch (error: any) {
-    console.error('API Error:', error);
+  } catch (error: unknown) {
+    const err = error as ApiError;
+    console.error('API Error:', err);
     return NextResponse.json(
-      { error: error.message || 'Internal server error' },
-      { status: 500 }
+      { 
+        error: err.response?.data?.error || err.message || 'Internal server error' 
+      },
+      { status: err.response?.status || 500 }
     );
   }
 }

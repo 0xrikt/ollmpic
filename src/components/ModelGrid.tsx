@@ -9,11 +9,22 @@ interface ModelGridProps {
   onModelChange: (index: number, config: ModelConfig) => void;
 }
 
+interface ErrorWithMessage {
+  message: string;
+}
+
+function isErrorWithMessage(error: unknown): error is ErrorWithMessage {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'message' in error &&
+    typeof (error as Record<string, unknown>).message === 'string'
+  );
+}
+
 export function ModelGrid({ models, responses, onModelChange }: ModelGridProps) {
-  const getErrorMessage = (error: any): string => {
-    if (typeof error === 'string') return error;
-    if (error?.message) return error.message;
-    if (typeof error === 'object') return JSON.stringify(error);
+  const getErrorMessage = (error: unknown): string => {
+    if (isErrorWithMessage(error)) return error.message;
     return 'Unknown error occurred';
   };
 
@@ -29,7 +40,8 @@ export function ModelGrid({ models, responses, onModelChange }: ModelGridProps) 
                 name: '',
                 apiKey: '',
                 temperature: 0.7,
-                maxTokens: 1000
+                maxTokens: 1000,
+                provider: 'openai'
               }}
               onChange={(config) => onModelChange(index, config)}
               label={`模型 ${index + 1}`}
