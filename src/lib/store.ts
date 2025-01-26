@@ -148,6 +148,7 @@ const useStore = create<ExtendedAppState>()(
               systemPrompt: state.systemPrompt,
               userInput: state.userInput
             }),
+            signal: AbortSignal.timeout(60000)
           });
       
           console.log('API Response status:', response.status);

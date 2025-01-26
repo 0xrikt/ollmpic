@@ -3,7 +3,6 @@ import type { Configuration as WebpackConfig } from 'webpack'
 
 const nextConfig: NextConfig = {
   webpack: (config: WebpackConfig) => {
-    // 避免客户端打包 Node 模块
     if (typeof window !== 'undefined') {
       config.resolve = {
         ...config.resolve,
@@ -20,7 +19,6 @@ const nextConfig: NextConfig = {
   },
   transpilePackages: ['@google/generative-ai'],
   
-  // 保留原有的 headers 配置
   async headers() {
     return [
       {
@@ -33,5 +31,16 @@ const nextConfig: NextConfig = {
         ]
       }
     ]
+  },
+
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
+  },
+
+  // 增加 Serverless 函数超时时间
+  serverRuntimeConfig: {
+    maxDuration: 60 // 设置为60秒
   }
 }
