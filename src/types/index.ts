@@ -1,5 +1,5 @@
 // src/types/index.ts
-export type ModelProvider = 'google' | 'zhipu' | 'openai' | 'anthropic';
+export type ModelProvider = 'deepseek' | 'zhipu' | 'openai' | 'anthropic' | 'google';
 
 export interface ModelConfig {
   id: string;

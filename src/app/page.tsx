@@ -3,11 +3,13 @@
 
 import { useEffect } from 'react';
 import { Analytics } from '@vercel/analytics/react';
-import { PromptInput } from '@/components/PromptInput';
-import { ModelGrid } from '@/components/ModelGrid';
-import { UserInput } from '@/components/UserInput';
-import { JudgePanel } from '@/components/JudgePanel';
-import useStore from '../lib/store';  // 使用相对路径
+import { PromptInput } from '../components/PromptInput';
+import { ModelGrid } from '../components/ModelGrid';
+import { UserInput } from '../components/UserInput';
+import { JudgePanel } from '../components/JudgePanel';
+import { History } from '../components/History';
+import { SaveButton } from '../components/SaveButton';
+import useStore from '../lib/store';
 
 export default function Home() {
   const {
@@ -69,13 +71,19 @@ export default function Home() {
             scores={scores}
           />
 
-          {/* User Input */}
-          <UserInput
-            value={userInput}
-            onChange={setUserInput}
-            onSubmit={runModels}
-            isLoading={isLoading}
-          />
+          {/* Save Button and User Input container */}
+          <div className="space-y-4">
+            <SaveButton />
+            <UserInput
+              value={userInput}
+              onChange={setUserInput}
+              onSubmit={runModels}
+              isLoading={isLoading}
+            />
+          </div>
+
+          {/* History */}
+          <History />
         </div>
       </div>
       <Analytics />

@@ -4,10 +4,13 @@ import { ModelConfig, ModelProvider } from '@/types';
 
 // 更新支持的模型列表
 const AVAILABLE_MODELS = [
-  { id: 'gemini-2-flash', name: 'Gemini 2.0 Flash Thinking Experimental (free)' },
-  { id: 'gemini-1.5-flash', name: 'GEMINI 1.5 FLASH-8B' },
+  { id: 'deepseek-chat', name: 'DeepSeek Chat v3' },
+  { id: 'deepseek-coder', name: 'DeepSeek Coder v2.5' },
+  { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner R1' },
   { id: 'glm-4-plus', name: 'GLM-4-PLUS' },
-  { id: 'glm-4-flash', name: 'GLM-4-FLASH' }
+  { id: 'glm-4-flash', name: 'GLM-4-FLASH' },
+  { id: 'models/gemini-1.5-flash', name: 'Gemini 1.5 Flash' },
+  { id: 'models/gemini-1.5-flash-8b', name: 'Gemini 1.5 Flash 8B' }
 ];
 
 interface ModelSelectProps {
@@ -101,7 +104,8 @@ export function ModelSelect({ value, onChange, label = '选择模型' }: ModelSe
 
 // 根据模型ID获取对应的provider
 function getModelProvider(modelId: string): ModelProvider {
-  if (modelId.startsWith('gemini')) return 'google';
+  if (modelId.startsWith('deepseek')) return 'deepseek';
   if (modelId.startsWith('glm')) return 'zhipu';
+  if (modelId.startsWith('gemini')) return 'google';
   return 'openai'; // fallback
 }

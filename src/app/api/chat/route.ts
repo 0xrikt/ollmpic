@@ -13,8 +13,17 @@ interface ApiError extends Error {
 }
 
 export async function POST(request: Request) {
+  console.log('Received chat API request');
   try {
-    const { models, judge, systemPrompt, userInput } = await request.json();
+    const body = await request.json();
+    console.log('Request body:', {
+      models: body.models?.map(m => ({ id: m.id, provider: m.provider, hasKey: !!m.apiKey })),
+      hasJudge: !!body.judge,
+      hasSystemPrompt: !!body.systemPrompt,
+      hasUserInput: !!body.userInput
+    });
+    
+    const { models, judge, systemPrompt, userInput } = body;
 
     // 验证必要的输入
     if (!Array.isArray(models) || !models.length) {
@@ -53,6 +62,7 @@ export async function POST(request: Request) {
       if (response.status === 'fulfilled') {
         return response.value;
       }
+      console.error('Model response error:', response);
       return {
         modelId: validModels[index].id,
         content: '',
@@ -63,9 +73,16 @@ export async function POST(request: Request) {
     // 如果提供了裁判模型，调用裁判评分
     let judgeResponse = null;
     if (judge?.apiKey && judge?.id && modelResponses.some(r => !r.error)) {
+      console.log('Calling judge model');
       const validResponses = modelResponses.filter(r => !r.error);
       judgeResponse = await callJudge(judge, systemPrompt || '', validResponses);
+      console.log('Judge response received:', judgeResponse);
     }
+
+    console.log('Returning responses:', {
+      responsesCount: modelResponses.length,
+      hasJudgeResponse: !!judgeResponse
+    });
 
     return NextResponse.json({
       responses: modelResponses,
@@ -73,7 +90,13 @@ export async function POST(request: Request) {
     });
   } catch (error: unknown) {
     const err = error as ApiError;
-    console.error('API Error:', err);
+    console.error('API Error:', {
+      message: err.message,
+      response: err.response?.data,
+      status: err.response?.status,
+      stack: err.stack
+    });
+    
     return NextResponse.json(
       { 
         error: err.response?.data?.error || err.message || 'Internal server error' 
