@@ -8,9 +8,7 @@ const AVAILABLE_MODELS = [
   { id: 'deepseek-coder', name: 'DeepSeek Coder v2.5' },
   { id: 'deepseek-reasoner', name: 'DeepSeek Reasoner R1' },
   { id: 'glm-4-plus', name: 'GLM-4-PLUS' },
-  { id: 'glm-4-flash', name: 'GLM-4-FLASH' },
-  { id: 'models/gemini-1.5-flash', name: 'Gemini 1.5 Flash' },
-  { id: 'models/gemini-1.5-flash-8b', name: 'Gemini 1.5 Flash 8B' }
+  { id: 'glm-4-flash', name: 'GLM-4-FLASH' }
 ];
 
 interface ModelSelectProps {
