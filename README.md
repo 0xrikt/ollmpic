@@ -4,7 +4,7 @@ Ollmpic 是一个开源的大语言模型评测平台，让您能够方便地比
 
 ## ✨ 特点
 
-- 🤖 支持多个主流大语言模型（如 DeepSeek、GLM 等）
+- 🤖 支持多个主流大语言模型（DeepSeek、GLM、Gemini 等）
 - 💻 简洁直观的用户界面
 - 🔐 注重 API 密钥安全，不保存敏感信息
 - ⚡ 实时比较多个模型的输出
@@ -56,6 +56,7 @@ npm run dev
 3. 配置环境变量
 4. 点击部署
 
+
 ## 💡 使用说明
 
 1. **系统提示词设置**
@@ -68,8 +69,11 @@ npm run dev
    - 目前支持的模型：
      - DeepSeek Chat v3
      - DeepSeek Coder v2.5
+     - DeepSeek Reasoner R1
      - GLM-4-PLUS
      - GLM-4-FLASH
+     - Gemini 1.5 Flash
+     - Gemini 1.5 Flash 8B
 
 3. **裁判模型**
    - 选择一个模型作为裁判
@@ -90,11 +94,15 @@ npm run dev
 ## 🔑 支持的模型及 API 密钥获取
 
 1. DeepSeek 系列
-   - 访问 [DeepSeek 官网](https://platform.deepseek.com/)
+   - 访问 [DeepSeek 平台](https://platform.deepseek.com/)
    - 注册账号并生成 API 密钥
 
 2. GLM 系列
    - 访问 [智谱 AI](https://open.bigmodel.cn/)
+   - 注册账号并生成 API 密钥
+
+3. Google 系列
+   - 访问 [Google AI Studio](https://makersuite.google.com/)
    - 注册账号并生成 API 密钥
 
 ## 🤝 贡献
